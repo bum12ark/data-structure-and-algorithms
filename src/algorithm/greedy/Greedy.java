@@ -21,19 +21,26 @@ public class Greedy {
         System.out.println("총 동전 개수: "+totalCoinCount);
     }
 
-    /** 부분 배낭 문제제 **/
-    public void fractionalKnapsack(Integer[][] objectList, double capacity) {
-        // objectList를 무게 / 물건 이 큰 순으로 표기하기
-        for (Integer[] integers : objectList) {
-            System.out.println((double) integers[1] / integers[0]);
-        }
+    /** 부분 배낭 문제 **/
+    public double fractionalKnapsack(Integer[][] objectList, double capacity) {
+        // 개당 가치가 높은 순서대로 정렬
+        Arrays.sort(objectList, (integers1, integers2)
+                -> Double.compare((double) integers2[1] / integers2[0], (double) integers1[1] / integers1[0]));
 
-        Arrays.sort(objectList, (o1, o2) -> {
-            double v1 = (double) o1[1] / o1[0];
-            double v2 = (double) o1[1] / o1[0];
-            return o1[0] - o2[1];
-        });
-        Arrays.stream(objectList).forEach(integers -> System.out.println(Arrays.toString(integers)));
+        double totalValue = 0;
+        for (Integer[] integers : objectList) {
+            double weight = integers[0];
+            double value = integers[1];
+
+            if (capacity - weight > 0) {
+                capacity -= weight;
+                totalValue += value;
+            } else {
+                totalValue +=  (value / weight) * capacity;
+                break;
+            }
+        }
+        return totalValue;
     }
 
     public static void main(String[] args) {
@@ -46,10 +53,9 @@ public class Greedy {
         // fractionalKnapsack
         System.out.println("=======fractionalKnapsack=========");
         Integer[][] objectList = {
-                {10, 10},
-                {10, 15},
-                {10, 18}
+                {10, 10}, {15, 12}, {20, 10}, {25, 8}, {30, 5}
         };
-        greedy.fractionalKnapsack(objectList, 10);
+
+        System.out.println(greedy.fractionalKnapsack(objectList, 30.0));
     }
 }
