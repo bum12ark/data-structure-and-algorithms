@@ -36,7 +36,7 @@ public class Greedy {
                 capacity -= weight;
                 totalValue += value;
             } else {
-                totalValue +=  (value / weight) * capacity;
+                totalValue += (value / weight) * capacity;
                 break;
             }
         }

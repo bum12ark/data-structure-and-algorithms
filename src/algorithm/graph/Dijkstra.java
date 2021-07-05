@@ -43,7 +43,7 @@ public class Dijkstra {
             int currentDistance = edgeNode.distance;
             String currentVertex = edgeNode.vertex;
 
-            // 여태까지 찾은 최단거리보다 현재 노드의 최단거리가 더 크다면 진행할 필요 없음음
+           // 여태까지 찾은 최단거리보다 현재 노드의 최단거리가 더 크다면 진행할 필요 없음
            if (distances.get(currentVertex) < currentDistance) {
                 continue;
             }
