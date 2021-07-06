@@ -15,12 +15,25 @@ public class BOJ_1182 {
 
     }
 
-    static int N, S;
+    static int N, S, ans;
     static int[] nums;
+
+    static void recFunc(int k, int value) {
+        if (k == N) {
+            if (value == S) ans++;
+            return;
+        }
+
+        recFunc(k + 1, value + nums[k]);
+        recFunc(k + 1, value);
+    }
 
     public static void main(String[] args) {
         input();
-        System.out.println(N + " " + S);
-        System.out.println(Arrays.toString(nums));
+        recFunc(0, 0);
+        if (S == 0) {
+            ans--;
+        }
+        System.out.println(ans);
     }
 }
