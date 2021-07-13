@@ -33,7 +33,8 @@ public class BOJ_16472 {
         }
     }
 
-    static int getKind(int rightIdx) { // 입력하기 전의 kind 숫자를 가져오는 메서드
+    // 이동 가능한 위치까지 R을 이동 시키기 위해 right 를 이동 시 kind 의 개수를 리턴하는 함수
+    static int getKind(int rightIdx) {
         int cntIdx = A.charAt(rightIdx) - 'a';
         if (cnt[cntIdx] == 0) {
             return kind + 1;
@@ -42,18 +43,19 @@ public class BOJ_16472 {
     }
 
     static void pro() {
-        int right = -1, max = Integer.MIN_VALUE, len = A.length();
+        int right = -1, ans = Integer.MIN_VALUE, len = A.length();
         for (int left = 0; left < len; left++) {
+            // R 을 이동 가능한 위치까지 이동
             while (right + 1 < len && getKind(right + 1) <= N) {
                 right += 1;
                 add(A.charAt(right));
             }
 
-            max = Math.max(max, right - left + 1);
+            ans = Math.max(ans, right - left + 1);
 
             erase(A.charAt(left));
         }
-        System.out.println(max);
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
