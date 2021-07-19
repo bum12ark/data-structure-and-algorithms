@@ -27,11 +27,13 @@ public class BOJ_1240 {
     static Map<Integer, List<Edge>> tree = new HashMap<>(); // {노드, 거리}
     static int[][] question;
     static boolean[] visited;
+    static int[] dist;
 
     static void input() {
         N = fastReader.nextInt();
         M = fastReader.nextInt();
         visited = new boolean[N + 1];
+        dist = new int[N + 1];
 
         for (int i = 1; i <= N; i++) {
             tree.put(i, new ArrayList<>());
@@ -52,22 +54,31 @@ public class BOJ_1240 {
         }
     }
 
-    static void dfs(int vertex, int distSum) {
+    static void dfs(int vertex) {
         visited[vertex] = true;
 
         for (Edge edge : tree.get(vertex)) {
             int distance = edge.distance;
             int adj = edge.node;
+            if (!visited[adj]) {
+                visited[adj] = true;
+                dist[adj] = dist[vertex] + distance;
+                dfs(adj);
+            }
         }
     }
 
     static void solution() {
-
+        for (int m = 0; m < M; m++) {
+            for (int i = 1; i <= N; i++) dist[i] = 0;
+            for (int i = 1; i <= N; i++) visited[i] = false;
+            dfs(question[m][0]);
+            System.out.println(dist[question[m][1]]);
+        }
     }
 
     public static void main(String[] args) {
         input();
-        System.out.println(tree);
-
+        solution();
     }
 }
