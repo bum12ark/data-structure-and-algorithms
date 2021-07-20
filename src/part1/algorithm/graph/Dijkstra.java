@@ -52,9 +52,9 @@ public class Dijkstra {
             for (Edge adjacentNode : edges) {
                 String adjacent = adjacentNode.vertex;
                 int weight = adjacentNode.distance;
+                int distance = currentDistance + weight;
 
-                if (weight < distances.get(adjacent)) {
-                    int distance = currentDistance + weight;
+                if (distance < distances.get(adjacent)) {
                     distances.put(adjacent, distance);
                     priorityQueue.add(new Edge(adjacent, distance));
                 }
