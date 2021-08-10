@@ -1,4 +1,4 @@
-package mockexam.set1;
+package mockexam.fastcampus.set1;
 
 import part2.common.FastReader;
 

@@ -1,10 +1,12 @@
-package mockexam.set2;
+package mockexam.fastcampus.set2;
 
 import part2.common.FastReader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class BOJ_21939_Advanced {
+/* 문제 추천 시스템 Version 1 */
+public class BOJ_21939 {
     static class Question {
         int num;
         int difficulty;
@@ -13,69 +15,52 @@ public class BOJ_21939_Advanced {
             this.num = num;
             this.difficulty = difficulty;
         }
-
-        @Override
-        public String toString() {
-            return "[" + this.num + ", " + this.difficulty + "]";
-        }
-
     }
 
     static FastReader fastReader = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
     static int N, M; // 문제의 개수, 명령문의 개수
-    static PriorityQueue<Question> maxHeap = new PriorityQueue<>((o1, o2) -> {
-        if (o1.difficulty != o2.difficulty) {
-            return Integer.compare(o2.difficulty, o1.difficulty);
-        }
-        return Integer.compare(o2.num, o1.num);
-    });
-    static PriorityQueue<Question> minHeap = new PriorityQueue<>((o1, o2) -> {
-        if (o1.difficulty != o2.difficulty) {
-            return Integer.compare(o1.difficulty, o2.difficulty);
-        }
-        return Integer.compare(o1.num, o2.num);
-    });
-    static Map<Integer, Question> map = new HashMap<>(); // 문제의 번호와 난이도를 기록하는 map
+    static List<Question> questionList = new ArrayList<>();
 
     static void input() {
         N = fastReader.nextInt();
         for (int i = 0; i < N; i++) {
             int P = fastReader.nextInt();
             int L = fastReader.nextInt();
-            Question question = new Question(P, L);
-            maxHeap.add(question);
-            minHeap.add(question);
-            map.put(P, question);
+            questionList.add(new Question(P, L));
         }
         M = fastReader.nextInt();
     }
 
     static void add(int num, int difficulty) {
-        Question question = new Question(num, difficulty);
-        maxHeap.add(question);
-        minHeap.add(question);
-        map.put(num, question);
+        questionList.add(new Question(num, difficulty));
     }
 
     static int recommend(int x) {
         if (x == 1) {
-            Question question = Objects.requireNonNull(maxHeap.peek());
-            return question.num;
+            questionList.sort((o1, o2) -> {
+                if (o1.difficulty != o2.difficulty) {
+                    return Integer.compare(o2.difficulty, o1.difficulty);
+                }
+                return Integer.compare(o2.num, o1.num);
+            });
+            return questionList.get(0).num;
         }
         if (x == -1) {
-            Question question = Objects.requireNonNull(minHeap.peek());
-            return question.num;
+            questionList.sort((o1, o2) -> {
+                if (o1.difficulty != o2.difficulty) {
+                    return Integer.compare(o1.difficulty, o2.difficulty);
+                }
+                return Integer.compare(o1.num, o2.num);
+            });
+            return questionList.get(0).num;
         }
         return -1;
     }
 
     static void solved(int num) {
-        Question question = map.get(num);
-        map.remove(num);
-        maxHeap.remove(question);
-        minHeap.remove(question);
+        questionList.removeIf(question -> num == question.num);
     }
 
     static void process() {
