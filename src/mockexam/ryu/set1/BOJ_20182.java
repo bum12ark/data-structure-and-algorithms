@@ -48,7 +48,7 @@ public class BOJ_20182 {
     }
 
     static boolean dijkstra(long maxAmount) {
-        // x 라는 정답에 대해서 다익스트라 알고리즘을 수행하고, 가지고 있는 동과 비교하는 함수
+        // maxAmount 라는 정답에 대해서 다익스트라 알고리즘을 수행하고, 가지고 있는 동과 비교하는 함수
         for (int i = 1; i <= N; i++) distance[i] = Long.MAX_VALUE;
 
         // 최소힙 생성
@@ -69,28 +69,39 @@ public class BOJ_20182 {
             for (Edge adj : graph.get(pollEdge.to)) {
                 if (adj.weight > maxAmount) continue;
                 // adj.to 까지 갈 수 있는 더 짧은 거리를 찾았다면 이에 대한 정보를 갱신하고 기록한다.
-                if (distance[adj.to] > distance[pollEdge.to] + adj.weight) {
-                    distance[adj.to] = distance[pollEdge.to] + adj.weight;
+                long newDistance = distance[pollEdge.to] + adj.weight;
+                if (distance[adj.to] > newDistance) {
+                    distance[adj.to] = newDistance;
                     priorityQueue.add(new Edge(adj.to, distance[adj.to]));
                 }
             }
         }
-        return false;
+        return distance[B] <= C;
     }
 
     static void process() {
         // 변수 초기화
-        long left = 1, right = 1_000_000_001;
+        long left = 1, right = 1_000_000_001, ans = 0;
 
         // 정답에 대한 이분 탐색 시작
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            if (dijkstra(mid)) {
+                // 최소 값이므로 첫번 째 Yes 가 정답 (오른쪽은 볼 필요가 없다)
+                right = mid - 1;
+                ans = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
 
         // 정답 출력
+        if (ans == 0) System.out.println(-1);
+        else System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
         process();
-        dijkstra(5);
-        System.out.println(Arrays.toString(distance));
     }
 }
